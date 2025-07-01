@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Info - Newpious Synergious</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="page2-container">
+    <h1 class="page2-title">Newpious Synergious Pvt Ltd</h1>
+    <div class="page2-content">
+      <!-- Left: Form Section -->
+      <div class="form-section">
+        <h4 class="form-heading mb-4">Submit Your Info</h4>
+        <form id="submit-to-google-sheet">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input class="form-control" type="text" name="name" id="name" placeholder="Enter your name" required />
+          </div>
+          <div class="form-group">
+            <label for="contact_number">Contact Number:</label>
+            <input
+              class="form-control"
+              type="text"
+              name="contact_number"
+              id="contact_number"
+              placeholder="Enter 10-digit contact number"
+              required
+              pattern="\d{10}"
+              maxlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+      </div>
+
+      <!-- Right: Image with Overlay Text -->
+      <div class="image-section">
+        <div class="image-overlay">
+          <h2>Only 2 Steps Left</h2>
+          <p>You're almost there to see your solar estimate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw7oV_xIQsifDA_GtGiQQYf_hrprY6mJ7kcSxUlZJDHUh7-yjeUMMwl7T6RbXiXu35lCQ/exec";
+    const form = document.forms["submit-to-google-sheet"];
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then((response) => {
+          swal("Success!", "Your form was submitted.", "success").then(() => {
+            window.location.href = "../page2/bill.html";
+          });
+        })
+        .catch((error) => {
+          swal("Success!", "Your form was submitted.", "success").then(() => {
+            window.location.href = "../page2/bill.html";
+          });});
+    });
+  </script>
+</body>
+</html>

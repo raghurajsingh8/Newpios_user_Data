@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c1c1c);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 2rem;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  color: #00ffe5;
+  text-shadow: 2px 2px 5px #000;
+}
+
+.subtitle {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: #ffff66;
+  padding: 0 1rem;
+}
+
+.desc {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  padding: 0 1.5rem;
+}
+
+.get-started {
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  background: #00c6ff;
+  border: none;
+  border-radius: 8px;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.get-started:hover {
+  background: #0072ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.stats {
+  margin-top: 3rem;
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
+  min-width: 140px;
+}
+
+.stat-item:hover {
+  transform: scale(1.05);
+}
+
+.stat-item h2 {
+  font-size: 2.5rem;
+  color: #00ffab;
+}
+
+.stat-item p {
+  font-size: 1.1rem;
+}
+
+
+/* ---------- Responsive Design ---------- */
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .subtitle {
+    font-size: 1.3rem;
+  }
+  .desc {
+    font-size: 1.1rem;
+  }
+  .get-started {
+    font-size: 1rem;
+    padding: 0.7rem 1.5rem;
+  }
+  .stats {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  .subtitle {
+    font-size: 1.1rem;
+  }
+  .desc {
+    font-size: 1rem;
+  }
+  .get-started {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+  .stat-item h2 {
+    font-size: 2rem;
+  }
+  .stat-item p {
+    font-size: 1rem;
+  }
+}

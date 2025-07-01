@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Panel Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+    .circle-box, .square-box {
+      background: #1c1f26;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .circle-box h2 {
+      font-size: 2rem;
+    }
+    .label {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+    .impact-positive { color: #4caf50; }
+    .impact-warning { color: #ffc107; }
+    .impact-danger { color: #f44336; }
+    .suggestion {
+      background: #263238;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mb-4">Solar Panel System Estimation</h1>
+    <div class="row text-center">
+      <div class="col-md-3 circle-box">
+        <h2 id="monthlyKwh">0</h2>
+        <div class="label">Monthly Energy Consumption<br><span class="impact-danger">High consumption</span></div>
+      </div>
+      <div class="col-md-3 circle-box">
+        <h2 id="solarCap">0</h2>
+        <div class="label">Required Solar Capacity<br><span class="impact-warning">Moderate</span></div>
+      </div>
+      <div class="col-md-3 circle-box">
+        <h2 id="sysCost">0</h2>
+        <div class="label">System Cost<br><span class="impact-danger">Significant investment</span></div>
+      </div>
+      <div class="col-md-3 circle-box">
+        <h2 id="dailySave">0</h2>
+        <div class="label">Savings per Day<br><span class="impact-positive">Daily savings</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 square-box">
+        <p><strong>Daily Energy Requirement</strong><br><span id="dailyKwh"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>Roof Area</strong><br><span id="roofArea"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>Trees Saved (25 yrs)</strong><br><span id="treesSaved"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>CO₂ Saved (25 yrs)</strong><br><span id="co2Saved"></span></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 square-box">
+        <p><strong>Panels Required</strong><br><span id="panelCount"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>Monthly Savings</strong><br><span id="monthlySave"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>Total Savings (25 yrs)</strong><br><span id="totalSave"></span></p>
+      </div>
+      <div class="col-md-3 square-box">
+        <p><strong>ROI</strong><br><span id="roi"></span></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 square-box">
+        <p><strong>Central Subsidy</strong><br><span id="centralSubsidy"></span></p>
+      </div>
+      <div class="col-md-6 square-box">
+        <p><strong>State Subsidy</strong><br><span id="stateSubsidy"></span></p>
+      </div>
+    </div>
+
+    <div class="suggestion mt-4">
+      <h4>Suggestion</h4>
+      <p>Consider optimizing energy usage by upgrading to energy-efficient appliances.</p>
+    </div>
+
+    <canvas id="energyChart" class="mt-4"></canvas>
+  </div>
+
+  <script>
+    const bill = +localStorage.getItem("bill") || 1500;
+    const sunlight = +localStorage.getItem("sunlight") || 5.5;
+    const rate = +localStorage.getItem("rate") || 6;
+
+    const monthly_kwh = bill / rate;
+    const daily_kwh = monthly_kwh / 30;
+    const required_kw = daily_kwh / sunlight;
+    const panels = Math.ceil((required_kw * 1000) / 300);
+    const system_cost = required_kw * 60000;
+    const roof_area = panels * 1.7;
+    const savings_per_day = daily_kwh * rate;
+    const monthly_savings = savings_per_day * 30;
+    const total_savings = monthly_savings * 12 * 25;
+    const trees_saved = required_kw * 0.75;
+    const co2_saved = required_kw * 30;
+    const roi = (total_savings / system_cost) * 100;
+    const central_subsidy = system_cost * 0.3;
+    const state_subsidy = system_cost * 0.2;
+
+    function formatRs(x) {
+      return "₹" + x.toFixed(2);
+    }
+
+    document.getElementById("monthlyKwh").innerText = monthly_kwh.toFixed(2) + " kWh";
+    document.getElementById("solarCap").innerText = required_kw.toFixed(2) + " kW";
+    document.getElementById("sysCost").innerText = formatRs(system_cost);
+    document.getElementById("dailySave").innerText = formatRs(savings_per_day);
+    document.getElementById("dailyKwh").innerText = daily_kwh.toFixed(2) + " kWh";
+    document.getElementById("roofArea").innerText = roof_area.toFixed(2) + " m²";
+    document.getElementById("treesSaved").innerText = trees_saved.toFixed(2);
+    document.getElementById("co2Saved").innerText = co2_saved.toFixed(2) + " tons";
+    document.getElementById("panelCount").innerText = panels;
+    document.getElementById("monthlySave").innerText = formatRs(monthly_savings);
+    document.getElementById("totalSave").innerText = formatRs(total_savings);
+    document.getElementById("roi").innerText = roi.toFixed(2) + "%";
+    document.getElementById("centralSubsidy").innerText = formatRs(central_subsidy);
+    document.getElementById("stateSubsidy").innerText = formatRs(state_subsidy);
+
+    new Chart(document.getElementById("energyChart"), {
+      type: "line",
+      data: {
+        labels: ["2020", "2025", "2030", "2035", "2040", "2045"],
+        datasets: [{
+          label: "Estimated Cumulative Savings (₹)",
+          data: [0, total_savings * 0.2, total_savings * 0.4, total_savings * 0.6, total_savings * 0.8, total_savings],
+          borderColor: "#00c6ff",
+          backgroundColor: "rgba(0,198,255,0.1)",
+          fill: true,
+          tension: 0.3
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

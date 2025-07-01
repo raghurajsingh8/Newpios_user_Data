@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Consumption Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Electricity Consumption & Bill Calculator</h1>
+
+        <a href="../page3/index.html" style="font-size: 1.05rem; color: rgb(40, 219, 58); text-decoration: none;">
+ 👉 Already know your electricity bill? Go to the
+<span style="color: #007bff; font-weight: bold; text-decoration: underline;">Next Page</span>
+</a>
+
+
+        
+        
+        <div id="appliance-form">
+            <h2>Select Appliance</h2>
+            
+            <label for="appliance-type">Appliance</label>
+            <select id="appliance-type" onchange="handleApplianceChange()">
+                <option value="Air Conditioner" data-watt="1500">Air Conditioner (1500W)</option>
+                <option value="Blender" data-watt="300">Blender (300W)</option>
+                <option value="Ceiling Fan" data-watt="70">Ceiling Fan (70W)</option>
+                <option value="Clothes Dryer" data-watt="2000">Clothes Dryer (2000W)</option>
+                <option value="Coffee Maker" data-watt="800">Coffee Maker (800W)</option>
+                <option value="Computer" data-watt="150">Computer (150W)</option>
+                <option value="Cooler" data-watt="150">Cooler (150W)</option>
+                <option value="Dishwasher" data-watt="1800">Dishwasher (1800W)</option>
+                <option value="Electric Heater" data-watt="2000">Electric Heater (2000W)</option>
+                <option value="Electric Kettle" data-watt="1500">Electric Kettle (1500W)</option>
+                <option value="Electric Iron" data-watt="1000">Electric Iron (1000W)</option>
+                <option value="Electric Stove" data-watt="1500">Electric Stove (1500W)</option>
+                <option value="Exhaust Fan" data-watt="50">Exhaust Fan (50W)</option>
+                <option value="Freezer" data-watt="100">Freezer (100W)</option>
+                <option value="Hair Dryer" data-watt="1500">Hair Dryer (1500W)</option>
+                <option value="Induction Cooktop" data-watt="2000">Induction Cooktop (2000W)</option>
+                <option value="Laptop" data-watt="50">Laptop (50W)</option>
+                <option value="Light Bulb (CFL)" data-watt="15">Light Bulb (CFL) (15W)</option>
+                <option value="Light Bulb (LED)" data-watt="10">Light Bulb (LED) (10W)</option>
+                <option value="Light Bulb (Incandescent)" data-watt="60">Light Bulb (Incandescent) (60W)</option>
+                <option value="Microwave" data-watt="1200">Microwave (1200W)</option>
+                <option value="Mixer" data-watt="500">Mixer (500W)</option>
+                <option value="Mobile Charger" data-watt="5">Mobile Charger (5W)</option>
+                <option value="Oven" data-watt="1000">Oven (1000W)</option>
+                <option value="Printer" data-watt="50">Printer (50W)</option>
+                <option value="Projector" data-watt="200">Projector (200W)</option>
+                <option value="Refrigerator" data-watt="150">Refrigerator (150W)</option>
+                <option value="Rice Cooker" data-watt="700">Rice Cooker (700W)</option>
+                <option value="Room Heater" data-watt="1500">Room Heater (1500W)</option>
+                <option value="Router" data-watt="10">Router (10W)</option>
+                <option value="Slow Cooker" data-watt="250">Slow Cooker (250W)</option>
+                <option value="Solar Panel" data-watt="0">Solar Panel (0W)</option>
+                <option value="Space Heater" data-watt="1500">Space Heater (1500W)</option>
+                <option value="Speakers" data-watt="20">Speakers (20W)</option>
+                <option value="Subwoofer" data-watt="150">Subwoofer (150W)</option>
+                <option value="Table Fan" data-watt="50">Table Fan (50W)</option>
+                <option value="Television" data-watt="120">Television (120W)</option>
+                <option value="Toaster" data-watt="800">Toaster (800W)</option>
+                <option value="Tubelight" data-watt="40">Tubelight (40W)</option>
+                <option value="Vacuum Cleaner" data-watt="700">Vacuum Cleaner (700W)</option>
+                <option value="Washing Machine" data-watt="500">Washing Machine (500W)</option>
+                <option value="Water Dispenser" data-watt="100">Water Dispenser (100W)</option>
+                <option value="Water Heater" data-watt="4000">Water Heater (4000W)</option>
+                <option value="Water Pump" data-watt="750">Water Pump (750W)</option>
+                <option value="Wi-Fi Router" data-watt="10">Wi-Fi Router (10W)</option>
+                <option value="Other">Other (Enter Manually)</option>
+            </select>
+
+            <div id="custom-appliance" style="display: none;">
+                <label for="custom-appliance-name">Appliance Name</label>
+                <input type="text" id="custom-appliance-name" placeholder="Enter Appliance Name">
+            </div>
+
+            <label for="power">Power (Watts)</label>
+            <input type="number" id="power" placeholder="Power (Watt)" min="0">
+
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" placeholder="Number of appliances" min="1" value="1">
+
+            <label for="usage">Usage per Day (hours)</label>
+            <input type="number" id="usage" placeholder="Usage per Day (hours)" step="0.1" min="0">
+
+            <label for="puc">Per Unit Cost</label>
+            <input type="number" id="puc" placeholder="₹/kWh (rupees per kilowatt-hour)" min="1" value="6"  editable>
+
+            <button onclick="addAppliance()">Add Appliance</button>
+        </div>
+
+        <div id="appliances-list">
+            <h2>Appliances</h2>
+            <ul id="appliance-list"></ul>
+        </div>
+
+        <button onclick="calculateBill()">Calculate Bill</button>
+
+     
+        <div id="results">
+    <h2>Results</h2>
+    <p id="daily-consumption"></p>
+    <p id="monthly-consumption"></p>
+    <p style="color: yellow; background-color: orangered;" id="monthly-bill"></p>
+    <p id="sanctioned-load"></p> <!-- Added to display the sanctioned load -->
+
+    <a href="../page3/index.html" class="go-back">Next</a>
+</div>
+
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

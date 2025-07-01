@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar Panel Calculator - Page 3</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Solar Panel Calculator</h1>
+
+    <label for="bill">Enter Monthly Electricity Bill (₹):</label>
+    <input type="number" id="bill" placeholder="e.g. 1500" min="0" />
+
+    <label for="type">Select Type:</label>
+    <select id="type">
+      <option value="Residential">Residential</option>
+      <option value="Commercial">Commercial</option>
+      <option value="Industrial">Industrial</option>
+    </select>
+
+    <button onclick="getLocation()">Detect Location (Auto Sunlight)</button>
+
+    <label for="lat">Latitude:</label>
+    <input type="text" id="lat" readonly />
+
+    <label for="lon">Longitude:</label>
+    <input type="text" id="lon" readonly />
+
+    <label for="sunlight">Sunlight Availability (Hours/Day):</label>
+    <input type="number" id="sunlight" step="0.1" placeholder="e.g. 5.5" />
+
+    <label for="rate">Electricity Rate (₹/kWh):</label>
+    <input type="number" id="rate" step="0.1" value="6" />
+
+    <button onclick="goToResult()">Calculate</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
